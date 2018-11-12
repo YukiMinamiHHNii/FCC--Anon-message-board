@@ -1,0 +1,38 @@
+{
+  "name": "anon-message-board",
+  "version": "1.0.0",
+  "description": "Anon message board project for freeCodeCamp InfoSec and QA certification",
+  "main": "app.js",
+  "scripts": {
+    "test": "mocha --ui tdd src/tests --timeout 10000",
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/YukiMinamiHHNii/FCC--Anon-message-board.git"
+  },
+  "keywords": [
+    "freeCodeCamp",
+    "InfoSec",
+    "QA"
+  ],
+  "author": "YukiMinamiHHNii",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/YukiMinamiHHNii/FCC--Anon-message-board/issues"
+  },
+  "homepage": "https://github.com/YukiMinamiHHNii/FCC--Anon-message-board#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "chai": "^4.2.0",
+    "chai-http": "^4.2.0",
+    "dotenv": "^6.1.0",
+    "express": "^4.16.4",
+    "helmet": "^3.15.0",
+    "method-override": "^3.0.0",
+    "mocha": "^5.2.0",
+    "mongodb": "^3.1.9",
+    "mongoose": "^5.3.11",
+    "pug": "^2.0.3"
+  }
+}

@@ -1,0 +1,86 @@
+:root {
+	--font-size: 16px;
+	--font-family: sans-serif;
+	--font-color: #fff;
+	--color-main: #282923;
+	--color-secondary: #404040;
+	--pad-btn: #c4c5c9;
+	--pad-btn-active: #f98d11;
+	--general-spacing: .5rem;
+}
+
+html {
+	font-family: var(--font-family);
+	font-size: var(--font-size);
+	color: var(--font-color);
+	line-height: 1.6;
+	box-sizing: border-box;
+	background-color: var(--color-main);
+}
+
+a {
+	color: var(--pad-btn-active);
+}
+
+*,
+*:after,
+*:before {
+	box-sizing: inherit;
+	margin: 0;
+	padding: 0;
+}
+
+body{
+	padding: var(--general-spacing);
+}
+
+.highlight{
+	margin: var(--general-spacing);
+	padding: var(--general-spacing);
+	background-color: var(--color-secondary);
+}
+
+.spacing{
+	margin: var(--general-spacing);
+}
+
+.form-submit, .header{
+	text-align: center;
+}
+
+label{
+	padding: var(--general-spacing);
+}
+
+input, textarea, button {
+	padding: var(--general-spacing);
+}
+
+textarea{
+	resize: none;
+}
+
+input[type="submit"], button {
+	border: none;
+	background-color: var(--pad-btn);
+	margin: var(--general-spacing) 0;
+}
+
+input[type="submit"]:hover, button:hover {
+	background-color: var(--pad-btn-active);
+	color: var(--font-color);
+}
+
+table{
+	border-collapse: collapse;
+}
+
+td, th {
+	border: 1px solid var(--font-color);
+	padding: var(--general-spacing);
+	text-align: center;
+}
+
+th{
+	background-color: var(--pad-btn-active);
+}
