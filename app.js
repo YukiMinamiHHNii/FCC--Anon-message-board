@@ -2,7 +2,9 @@ const express = require("express"),
 	dotenv = require("dotenv").load(),
 	bodyParser = require("body-parser"),
 	methodOver = require("method-override"),
-	helmet = require("helmet");
+	helmet = require("helmet"),
+	threadsRouter = require("./src/routers/threadsRouter"),
+	repliesRouter = require("./src/routers/repliesRouter");
 
 const app = express();
 
@@ -23,6 +25,9 @@ app.use(
 app.use(helmet.frameguard({ action: "sameorigin" }));
 app.use(helmet.dnsPrefetchControl({ allow: false }));
 app.use(helmet.referrerPolicy({ policy: "same-origin" }));
+
+app.use("/api", threadsRouter);
+app.use("/api", repliesRouter);
 
 app.use("/", (req, res) => {
 	res.render("index");
