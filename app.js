@@ -1,6 +1,8 @@
 const express = require("express"),
 	dotenv = require("dotenv").load(),
-	bodyParser = require("body-parser");
+	bodyParser = require("body-parser"),
+	methodOver = require("method-override"),
+	helmet = require("helmet");
 
 const app = express();
 
@@ -8,6 +10,19 @@ app.set("view engine", "pug");
 
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(
+	methodOver((req, res) => {
+		if (req.body._method) {
+			let method = req.body._method;
+			delete req.body._method;
+			return method;
+		}
+	})
+);
+
+app.use(helmet.frameguard({ action: "sameorigin" }));
+app.use(helmet.dnsPrefetchControl({ allow: false }));
+app.use(helmet.referrerPolicy({ policy: "same-origin" }));
 
 app.use("/", (req, res) => {
 	res.render("index");
