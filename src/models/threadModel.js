@@ -3,7 +3,7 @@ const mongoose = require("mongoose"),
 			Reply = require("./replyModel");
 
 const threadSchema = new Schema({
-	board: { type: String, required: true },
+	board: { type: String, required: true, unique: true },
 	text: { type: String, required: true },
 	created_on: { type: Date, default: new Date() },
 	bumped_on: { type: Date, default: new Date() },

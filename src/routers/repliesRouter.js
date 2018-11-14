@@ -1,20 +1,13 @@
 const express = require("express"),
-			router = express.Router();
+			router = express.Router(),
+			repliesController = require("../controllers/repliesController");
 
-router.post("/replies/:board", (req, res) => {
-	res.json({ status: "on replies POST" });
-});
+router.post("/replies/:board", repliesController.createReply);
 
-router.get("/replies/:board", (req, res) => {
-	res.json({ status: "on replies GET" });
-});
+router.get("/replies/:board", repliesController.getReplies);
 
-router.put("/replies/:board", (req, res) => {
-	res.json({ status: "on replies PUT" });
-});
+router.put("/replies/:board", repliesController.reportReply);
 
-router.delete("/replies/:board", (req, res) => {
-	res.json({ status: "on replies DELETE" });
-});
+router.delete("/replies/:board", repliesController.deleteReply);
 
 module.exports = router;
