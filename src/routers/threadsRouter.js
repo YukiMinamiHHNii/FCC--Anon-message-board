@@ -1,20 +1,13 @@
 const express = require("express"),
-			router = express.Router();
+	router = express.Router(),
+	threadsController = require("../controllers/threadsController");
 
-router.get("/threads/:board", (req, res) => {
-	res.json({ status: "on threads GET" });
-});
+router.post("/threads/:board", threadsController.createThread);
 
-router.post("/threads/:board", (req, res) => {
-	res.json({ status: "on threads POST", data: req.body });
-});
+router.get("/threads/:board", threadsController.getThreads);
 
-router.put("/threads/:board", (req, res) => {
-	res.json({ status: "on threads PUT" });
-});
+router.put("/threads/:board", threadsController.reportThread);
 
-router.delete("/threads/:board", (req, res) => {
-	res.json({ status: "on threads DELETE" });
-});
+router.delete("/threads/:board", threadsController.deleteThread);
 
 module.exports = router;

@@ -8,4 +8,4 @@ const replySchema = new Schema({
 	reported: { type: Boolean, default: false }
 });
 
-module.exports = mongoose.Model("Reply", replySchema);
+module.exports = mongoose.model("Reply", replySchema);

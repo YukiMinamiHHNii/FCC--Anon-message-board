@@ -1,12 +1,12 @@
 const express = require("express"),
 			router = express.Router();
 
-router.get("/replies/:board", (req, res) => {
-	res.json({ status: "on replies GET" });
-});
-
 router.post("/replies/:board", (req, res) => {
 	res.json({ status: "on replies POST" });
+});
+
+router.get("/replies/:board", (req, res) => {
+	res.json({ status: "on replies GET" });
 });
 
 router.put("/replies/:board", (req, res) => {

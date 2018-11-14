@@ -12,4 +12,4 @@ const threadSchema = new Schema({
 	replies: [{ type: Schema.Types.ObjectId, ref: "Reply" }]
 });
 
-module.exports = mongoose.Model("Thread", threadSchema);
+module.exports = mongoose.model("Thread", threadSchema);
