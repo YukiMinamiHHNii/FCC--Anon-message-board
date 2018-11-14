@@ -47,7 +47,7 @@ body
 		section.row.align-items-center
 			div.col-sm-12.spacing.d-flex.justify-content-center
 				h2 Thread operations
-			form.col-sm-12.col-lg-6(method="GET" action="/api/threads")
+			form.thread.col-sm-12.col-lg-6(method="GET")
 				div.highlight
 					h3.header Find threads on board
 					div.row.spacing
@@ -55,7 +55,7 @@ body
 						input.col-sm-6(type="text" name="board")
 					div.row.spacing
 						input.col-sm-12(type="submit" value="Find threads")
-			form.col-sm-12.col-lg-6(method="POST" action="/api/threads")
+			form.thread.col-sm-12.col-lg-6(method="POST")
 				div.highlight
 					h3.header Create a thread
 					div.row.spacing
@@ -69,7 +69,7 @@ body
 						input.col-sm-6(type="password" name="password" placeholder="Password to delete")
 					div.row.spacing
 						input.col-sm-12(type="submit" value="Create thread")
-			form.col-sm-12.col-lg-6(method="PUT" action="/api/threads")
+			form.thread.col-sm-12.col-lg-6(method="PUT")
 				div.highlight
 					h3.header Report thread
 					div.row.spacing
@@ -80,9 +80,12 @@ body
 						input.col-sm-6(type="text" name="thread")
 					div.row.spacing
 						input.col-sm-12(type="submit" value="Report thread")
-			form.col-sm-12.col-lg-6(method="DELETE" action="/api/threads")
+			form.thread.col-sm-12.col-lg-6(method="DELETE")
 				div.highlight
 					h3.header Delete thread
+					div.row.spacing
+						label.col-sm-6(for="board") Board:
+						input.col-sm-6(type="text" name="board")
 					div.row.spacing
 						label.col-sm-6(for="thread") Thread ID:
 						input.col-sm-6(type="text" name="thread")
@@ -94,7 +97,7 @@ body
 		section.row.align-items-center
 			div.col-sm-12.spacing.d-flex.justify-content-center
 				h2 Reply operations
-			form.col-sm-12.col-lg-6(method="GET" action="/api/replies")
+			form.reply.col-sm-12.col-lg-6(method="GET")
 				div.highlight
 					h3.header Show replies on thread
 					div.row.spacing
@@ -105,7 +108,7 @@ body
 						input.col-sm-6(type="text" name="thread")
 					div.row.spacing
 						input.col-sm-12(type="submit" value="Show replies")
-			form.col-sm-12.col-lg-6(method="POST" action="/api/replies")
+			form.reply.col-sm-12.col-lg-6(method="POST")
 				div.highlight
 					h3.header Reply to thread
 					div.row.spacing
@@ -122,7 +125,7 @@ body
 						input.col-sm-6(type="password" name="password" placeholder="Password to delete")
 					div.row.spacing
 						input.col-sm-12(type="submit" value="Post reply")
-			form.col-sm-12.col-lg-6(method="PUT" action="/api/replies")
+			form.reply.col-sm-12.col-lg-6(method="PUT")
 				div.highlight
 					h3.header Report reply on thread
 					div.row.spacing
@@ -136,7 +139,7 @@ body
 						input.col-sm-6(type="text" name="reply")
 					div.row.spacing
 						input.col-sm-12(type="submit" value="Report reply")
-			form.col-sm-12.col-lg-6(method="DELETE" action="/api/replies")
+			form.reply.col-sm-12.col-lg-6(method="DELETE")
 				div.highlight
 					h3.header Delete reply on thread
 					div.row.spacing
@@ -153,3 +156,4 @@ body
 						input.col-sm-6(type="password" name="password" placeholder="Password to delete")
 					div.row.spacing
 						input.col-sm-12(type="submit" value="Delete reply")
+	script(src="/js/action.js")
