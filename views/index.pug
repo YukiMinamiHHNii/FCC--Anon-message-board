@@ -27,34 +27,26 @@ body
 				thead
 					tr
 						th API
-						th GET
 						th POST
+						th GET
 						th PUT
 						th DELETE
 				tbody
 					tr
 						td /api/threads/{board}
-						td List recent threads
 						td Create thread
+						td List recent threads
 						td Report thread
 						td Delete thread with password
 					tr
 						td /api/replies/{board}
-						td Show all replies on thread
 						td Create reply on thread
+						td Show all replies on thread
 						td Report reply on thread
 						td Change reply to '[deleted]' on thread
 		section.row.align-items-center
 			div.col-sm-12.spacing.d-flex.justify-content-center
 				h2 Thread operations
-			form.thread.col-sm-12.col-lg-6(method="GET")
-				div.highlight
-					h3.header Find threads on board
-					div.row.spacing
-						label.col-sm-6(for="board") Board:
-						input.col-sm-6(type="text" name="board")
-					div.row.spacing
-						input.col-sm-12(type="submit" value="Find threads")
 			form.thread.col-sm-12.col-lg-6(method="POST")
 				div.highlight
 					h3.header Create a thread
@@ -69,6 +61,14 @@ body
 						input.col-sm-6(type="password" name="password" placeholder="Password to delete")
 					div.row.spacing
 						input.col-sm-12(type="submit" value="Create thread")
+			form.thread.col-sm-12.col-lg-6(method="GET")
+				div.highlight
+					h3.header Find threads on board
+					div.row.spacing
+						label.col-sm-6(for="board") Board:
+						input.col-sm-6(type="text" name="board")
+					div.row.spacing
+						input.col-sm-12(type="submit" value="Find threads")
 			form.thread.col-sm-12.col-lg-6(method="PUT")
 				div.highlight
 					h3.header Report thread
@@ -97,17 +97,6 @@ body
 		section.row.align-items-center
 			div.col-sm-12.spacing.d-flex.justify-content-center
 				h2 Reply operations
-			form.reply.col-sm-12.col-lg-6(method="GET")
-				div.highlight
-					h3.header Show replies on thread
-					div.row.spacing
-						label.col-sm-6(for="board") Board:
-						input.col-sm-6(type="text" name="board")
-					div.row.spacing
-						label.col-sm-6(for="thread") Thread ID:
-						input.col-sm-6(type="text" name="thread")
-					div.row.spacing
-						input.col-sm-12(type="submit" value="Show replies")
 			form.reply.col-sm-12.col-lg-6(method="POST")
 				div.highlight
 					h3.header Reply to thread
@@ -125,6 +114,17 @@ body
 						input.col-sm-6(type="password" name="password" placeholder="Password to delete")
 					div.row.spacing
 						input.col-sm-12(type="submit" value="Post reply")
+			form.reply.col-sm-12.col-lg-6(method="GET")
+				div.highlight
+					h3.header Show replies on thread
+					div.row.spacing
+						label.col-sm-6(for="board") Board:
+						input.col-sm-6(type="text" name="board")
+					div.row.spacing
+						label.col-sm-6(for="thread") Thread ID:
+						input.col-sm-6(type="text" name="thread")
+					div.row.spacing
+						input.col-sm-12(type="submit" value="Show replies")
 			form.reply.col-sm-12.col-lg-6(method="PUT")
 				div.highlight
 					h3.header Report reply on thread
