@@ -7,7 +7,9 @@ exports.createReply = (req, res) => {
 };
 
 exports.getReplies = (req, res) => {
-	res.json({ status: "on replies GET" });
+	repliesDAO.getReplies(req.query, result=>{
+		res.json(result);
+	});
 };
 
 exports.reportReply = (req, res) => {
