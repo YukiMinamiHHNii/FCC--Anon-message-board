@@ -7,7 +7,9 @@ exports.createThread = (req, res) => {
 };
 
 exports.getThreads = (req, res) => {
-	res.json({ status: "on threads GET" });
+	threadsDAO.getThreads(req.query, result=>{
+		res.json(result);
+	});
 };
 
 exports.reportThread = (req, res) => {

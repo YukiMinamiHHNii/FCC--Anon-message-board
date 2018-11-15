@@ -3,7 +3,7 @@ const mongoose = require("mongoose"),
 
 const replySchema = new Schema({
 	text: { type: String, required: true },
-	created_on: { type: Date, default: new Date() },
+	created_on: { type: Date, required: true },
 	delete_password: { type: String, required: true },
 	reported: { type: Boolean, default: false }
 });

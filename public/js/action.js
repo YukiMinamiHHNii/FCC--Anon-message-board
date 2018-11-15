@@ -8,8 +8,8 @@ function handleSubmit() {
 		let data = new FormData(e.target);
 
 		e.target.action = e.target.classList.contains("thread")
-			? `${e.target.baseURI}api/threads/${data.get("board")}`
-			: `${e.target.baseURI}api/replies/${data.get("board")}`;
+			? `${e.target.baseURI}api/threads`
+			: `${e.target.baseURI}api/replies`;
 
 		if (e.target.attributes.getNamedItem("method").value == "GET" ||
 				e.target.attributes.getNamedItem("method").value == "POST") {

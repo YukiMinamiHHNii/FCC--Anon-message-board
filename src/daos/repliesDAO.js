@@ -13,9 +13,9 @@ function handleConnection(connected) {
 }
 
 exports.createReply = (data, result) => {
-	handleConnection((err, connected) => {
+	handleConnection((error, connected) => {
 		if (!connected) {
-			return result({ status: "Error while connecting to DB", error: err });
+			return result({ status: "Error while connecting to DB", error: error });
 		} else {
 			Thread.findOne({ _id: data.thread, board: data.board }).exec(
 				(error, foundThread) => {
@@ -25,7 +25,7 @@ exports.createReply = (data, result) => {
 							error: error //Remove this later
 						});
 					} else {
-						Reply({ text: data.reply, delete_password: data.password }).save(
+						Reply({ text: data.reply, delete_password: data.password, created_on: new Date() }).save(
 							(error, savedReply) => {
 								if (error) {
 									return result({
