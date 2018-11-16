@@ -12,12 +12,12 @@ function handleConnection(connected) {
 	);
 }
 
-exports.createReply = (data, result) => {
+exports.createReply = (params, data, result) => {
 	handleConnection((error, connected) => {
 		if (!connected) {
 			return result({ status: "Error while connecting to DB", error: error });
 		} else {
-			Thread.findOne({ _id: data.thread, board: data.board }).exec(
+			Thread.findOne({ _id: data.thread, board: params.board }).exec(
 				(error, foundThread) => {
 					if (error || !foundThread) {
 						return result({
@@ -57,13 +57,12 @@ exports.createReply = (data, result) => {
 	});
 };
 
-exports.getReplies = (data, result) => {
-	console.log(data);
+exports.getReplies = (params, data, result) => {
 	handleConnection((error, connected) => {
 		if (!connected) {
 			return result({ status: "Error while connecting to DB", error: error });
 		} else {
-			Thread.find({ board: data.board, _id: data.thread })
+			Thread.find({ board: params.board, _id: data.thread })
 				.select({ __v: 0, delete_password: 0, reported: 0 })
 				.populate({
 					path: "replies",

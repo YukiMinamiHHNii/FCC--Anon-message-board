@@ -2,12 +2,12 @@ const express = require("express"),
 			router = express.Router(),
 			repliesController = require("../controllers/repliesController");
 
-router.post("/replies", repliesController.createReply);
+router.post("/replies/:board", repliesController.createReply);
 
-router.get("/replies", repliesController.getReplies);
+router.get("/replies/:board", repliesController.getReplies);
 
-router.put("/replies", repliesController.reportReply);
+router.put("/replies/:board", repliesController.reportReply);
 
-router.delete("/replies", repliesController.deleteReply);
+router.delete("/replies/:board", repliesController.deleteReply);
 
 module.exports = router;

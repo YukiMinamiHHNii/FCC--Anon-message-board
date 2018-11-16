@@ -11,13 +11,13 @@ function handleConnection(result) {
 	);
 }
 
-exports.createThread = (data, result) => {
+exports.createThread = (params, data, result) => {
 	handleConnection((error, connected) => {
 		if (!connected) {
 			return result({ status: "Error while connecting to DB", error: error });
 		} else {
 			new Thread({
-				board: data.board,
+				board: params.board,
 				text: data.thread,
 				delete_password: data.password
 			}).save((error, savedThread) => {
@@ -34,12 +34,12 @@ exports.createThread = (data, result) => {
 	});
 };
 
-exports.getThreads = (data, result) => {
+exports.getThreads = (params, result) => {
 	handleConnection((error, connected) => {
 		if (!connected) {
 			return result({ status: "Error while connecting to DB", error: error });
 		} else {
-			Thread.find({ board: data.board })
+			Thread.find({ board: params.board })
 				.sort({ created_on: -1 })
 				.limit(10)
 				.select({ __v: 0, delete_password: 0, reported: 0 })
@@ -51,7 +51,7 @@ exports.getThreads = (data, result) => {
 				.exec((err, foundThread) => {
 					if (err || Object.keys(foundThread).length < 1) {
 						return result({
-							status: `Threads not found for board: ${data.board}`
+							status: `Threads not found for board: ${params.board}`
 						});
 					} else {
 						return result(foundThread);

@@ -1,13 +1,13 @@
 const threadsDAO = require("../daos/threadsDAO");
 
 exports.createThread = (req, res) => {
-	threadsDAO.createThread(req.body, result=>{
+	threadsDAO.createThread(req.params, req.body, result=>{
 		res.json(result);
 	});
 };
 
 exports.getThreads = (req, res) => {
-	threadsDAO.getThreads(req.query, result=>{
+	threadsDAO.getThreads(req.params, result=>{
 		res.json(result);
 	});
 };

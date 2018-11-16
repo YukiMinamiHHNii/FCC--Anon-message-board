@@ -2,12 +2,12 @@ const express = require("express"),
 	router = express.Router(),
 	threadsController = require("../controllers/threadsController");
 
-router.post("/threads", threadsController.createThread);
+router.post("/threads/:board", threadsController.createThread);
 
-router.get("/threads", threadsController.getThreads);
+router.get("/threads/:board", threadsController.getThreads);
 
-router.put("/threads", threadsController.reportThread);
+router.put("/threads/:board", threadsController.reportThread);
 
-router.delete("/threads", threadsController.deleteThread);
+router.delete("/threads/:board", threadsController.deleteThread);
 
 module.exports = router;

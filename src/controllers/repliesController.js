@@ -1,13 +1,13 @@
 const repliesDAO = require("../daos/repliesDAO");
 
 exports.createReply = (req, res) => {
-	repliesDAO.createReply(req.body, result => {
+	repliesDAO.createReply(req.params, req.body, result => {
 		res.json(result);
 	});
 };
 
 exports.getReplies = (req, res) => {
-	repliesDAO.getReplies(req.query, result=>{
+	repliesDAO.getReplies(req.params, req.query, result=>{
 		res.json(result);
 	});
 };
