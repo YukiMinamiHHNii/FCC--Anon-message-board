@@ -20,5 +20,7 @@ exports.reportThread = (req, res) => {
 };
 
 exports.deleteThread = (req, res) => {
-	res.json({ status: "on threads DELETE" });
+	threadsDAO.deleteThread(req.params, req.body, result=>{
+		res.json(result);
+	});
 };

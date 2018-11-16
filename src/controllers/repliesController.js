@@ -19,5 +19,7 @@ exports.reportReply = (req, res) => {
 };
 
 exports.deleteReply = (req, res) => {
-	res.json({ status: "on replies DELETE" });
+	repliesDAO.deleteReply(req.params, req.body, result=>{
+		res.json(result);
+	});
 };

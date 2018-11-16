@@ -92,7 +92,8 @@ exports.reportReply = (params, data, result) => {
 			}).exec((err, foundThread) => {
 				if (error || !foundThread) {
 					return result({
-						status: "Error while retrieving reply data... are your filters correct?"
+						status:
+							"Error while retrieving reply data... are your filters correct?"
 					});
 				} else {
 					Reply.findOneAndUpdate(
@@ -111,6 +112,34 @@ exports.reportReply = (params, data, result) => {
 					});
 				}
 			});
+		}
+	});
+};
+
+exports.deleteReply = (params, data, result) => {
+	handleConnection((error, connected) => {
+		if (!connected) {
+			return result({ status: "Error while connecting to DB", error: error });
+		} else {
+			Thread.findOne({ board: params.board, _id: data.thread_id }).exec(
+				(err, foundThread) => {
+					if (err || !foundThread) {
+						return result({ status: "Requested thread not found", error: err });
+					} else {
+						Reply.findOneAndUpdate(
+							{ _id: data.reply_id, delete_password: data.delete_password },
+							{ $set: { text: "[deleted]" } },
+							{ new: true }
+						).exec((err, updatedReply) => {
+							if (err || !updatedReply) {
+								return result({ status: "Incorrect password or reply ID" });
+							} else {
+								return result({ status: "Success" });
+							}
+						});
+					}
+				}
+			);
 		}
 	});
 };

@@ -1,5 +1,6 @@
 const mongoose = require("mongoose"),
 	Thread = require("../models/threadModel"),
+	Reply= require("../models/replyModel"),
 	dotenv = require("dotenv").load();
 
 function handleConnection(result) {
@@ -73,12 +74,52 @@ exports.reportThread = (params, data, result) => {
 			).exec((err, updatedThread) => {
 				if (err || !updatedThread) {
 					return result({
-						status: `Thread ${data.thread_id} not found in board ${params.board}`
+						status: `Thread ${data.thread_id} not found in board ${
+							params.board
+						}`
 					});
 				} else {
 					return result({ status: "Success" });
 				}
 			});
+		}
+	});
+};
+
+exports.deleteThread = (params, data, result) => {
+	handleConnection((error, connected) => {
+		if (!connected) {
+			return result({ status: "Error while connecting to DB", error: error });
+		} else {
+			Thread.findOneAndDelete({
+				board: params.board,
+				_id: data.thread_id,
+				delete_password: data.delete_password
+			})
+				.populate({ path: "replies" })
+				.exec((err, deletedThread) => {
+					if (err) {
+						return result({
+							status: `Error while deleting thread ${data.thread_id}`,
+							error: err
+						});
+					} else if (!deletedThread) {
+						return result({ status: "Incorrect password or thread ID" });
+					} else {
+						Reply.deleteMany({ _id: { $in: deletedThread.replies } }).exec(
+							err => {
+								if (err) {
+									return result({
+										status: "Error while deleting linked replies",
+										error: err
+									});
+								} else {
+									return result({ status: "Success" });
+								}
+							}
+						);
+					}
+				});
 		}
 	});
 };
