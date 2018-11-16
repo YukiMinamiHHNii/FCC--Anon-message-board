@@ -39,7 +39,7 @@ function ajaxRequest(data, result) {
 	req.addEventListener("readystatechange", e => {
 		if (req.readyState === 4) {
 			if (req.status >= 200 && req.status < 400) {
-				result(JSON.parse(req.response));
+				return result(JSON.parse(req.response));
 			}
 		}
 	});
@@ -58,5 +58,6 @@ function getXHRType() {
 	} else if (window.ActiveXObject) {
 		request = new ActiveXObject("Microsoft.XMLHTTP");
 	}
+
 	return request;
 }

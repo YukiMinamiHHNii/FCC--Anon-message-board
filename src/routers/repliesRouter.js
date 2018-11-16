@@ -1,13 +1,15 @@
 const express = require("express"),
-			router = express.Router(),
-			repliesController = require("../controllers/repliesController");
+	router = express.Router(),
+	multer = require("multer"),
+	upload = multer(),
+	repliesController = require("../controllers/repliesController");
 
-router.post("/replies/:board", repliesController.createReply);
+router.post("/replies/:board", upload.none(), repliesController.createReply);
 
-router.get("/replies/:board", repliesController.getReplies);
+router.get("/replies/:board", upload.none(), repliesController.getReplies);
 
-router.put("/replies/:board", repliesController.reportReply);
+router.put("/replies/:board", upload.none(), repliesController.reportReply);
 
-router.delete("/replies/:board", repliesController.deleteReply);
+router.delete("/replies/:board", upload.none(), repliesController.deleteReply);
 
 module.exports = router;

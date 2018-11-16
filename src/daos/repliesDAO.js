@@ -13,11 +13,12 @@ function handleConnection(connected) {
 }
 
 exports.createReply = (params, data, result) => {
+	console.log(data);
 	handleConnection((error, connected) => {
 		if (!connected) {
 			return result({ status: "Error while connecting to DB", error: error });
 		} else {
-			Thread.findOne({ _id: data.thread, board: params.board }).exec(
+			Thread.findOne({ board: params.board, _id: data.thread_id }).exec(
 				(error, foundThread) => {
 					if (error || !foundThread) {
 						return result({
@@ -26,8 +27,8 @@ exports.createReply = (params, data, result) => {
 						});
 					} else {
 						Reply({
-							text: data.reply,
-							delete_password: data.password,
+							text: data.reply_text,
+							delete_password: data.delete_password,
 							created_on: new Date()
 						}).save((error, savedReply) => {
 							if (error) {
@@ -62,7 +63,7 @@ exports.getReplies = (params, data, result) => {
 		if (!connected) {
 			return result({ status: "Error while connecting to DB", error: error });
 		} else {
-			Thread.find({ board: params.board, _id: data.thread })
+			Thread.find({ board: params.board, _id: data.thread_id })
 				.select({ __v: 0, delete_password: 0, reported: 0 })
 				.populate({
 					path: "replies",
@@ -75,6 +76,41 @@ exports.getReplies = (params, data, result) => {
 						return result(foundThread);
 					}
 				});
+		}
+	});
+};
+
+exports.reportReply = (params, data, result) => {
+	handleConnection((error, connected) => {
+		if (!connected) {
+			return result({ status: "Error while connecting to DB", error: error });
+		} else {
+			Thread.findOne({
+				board: params.board,
+				_id: data.thread_id,
+				replies: data.reply_id
+			}).exec((err, foundThread) => {
+				if (error || !foundThread) {
+					return result({
+						status: "Error while retrieving reply data... are your filters correct?"
+					});
+				} else {
+					Reply.findOneAndUpdate(
+						{ _id: data.reply_id },
+						{ $set: { reported: true } },
+						{ new: true }
+					).exec((err, updatedReply) => {
+						if (err || !updatedReply) {
+							return result({
+								status: `Error while reporting reply ${data.reply_id}`,
+								error: err
+							});
+						} else {
+							return result({ status: "Success" });
+						}
+					});
+				}
+			});
 		}
 	});
 };

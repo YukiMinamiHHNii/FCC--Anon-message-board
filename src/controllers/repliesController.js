@@ -13,7 +13,9 @@ exports.getReplies = (req, res) => {
 };
 
 exports.reportReply = (req, res) => {
-	res.json({ status: "on replies PUT" });
+	repliesDAO.reportReply(req.params, req.body, result=>{
+		res.json(result);
+	});
 };
 
 exports.deleteReply = (req, res) => {

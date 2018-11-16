@@ -18,10 +18,10 @@ body
 				li I can POST a reply to a thread on a specific board by passing form data text, delete_password, &amp; thread_id to /api/replies/{board} and it will also update the bumped_on date on thread.(Recomend res.redirect to thread page /b/{board}/{thread_id}) In the thread's 'replies' array will be saved _id, text, created_on, delete_password, &amp; reported.
 				li I can GET an array of the most recent 10 bumped threads on the board with only the most recent 3 replies from /api/threads/{board}. The reported and delete_passwords fields will not be sent.
 				li I can GET an entire thread with all it's replies from /api/replies/{board}?thread_id={thread_id}. Also hiding the same fields.
-				li I can delete a thread completely if I send a DELETE request to /api/threads/{board} and pass along the thread_id &amp; delete_password. (Text response will be 'incorrect password' or 'success')
-				li I can delete a post(just changing the text to '[deleted]') if I send a DELETE request to /api/replies/{board} and pass along the thread_id, reply_id, &amp; delete_password. (Text response will be 'incorrect password' or 'success')
 				li I can report a thread and change it's reported value to true by sending a PUT request to /api/threads/{board} and pass along the thread_id. (Text response will be 'success')
 				li I can report a reply and change it's reported value to true by sending a PUT request to /api/replies/{board} and pass along the thread_id &amp; reply_id. (Text response will be 'success')
+				li I can delete a thread completely if I send a DELETE request to /api/threads/{board} and pass along the thread_id &amp; delete_password. (Text response will be 'incorrect password' or 'success')
+				li I can delete a post(just changing the text to '[deleted]') if I send a DELETE request to /api/replies/{board} and pass along the thread_id, reply_id, &amp; delete_password. (Text response will be 'incorrect password' or 'success')
 				li Complete functional tests that wholely test routes and pass.
 			table.highlight
 				thead
@@ -54,11 +54,11 @@ body
 						label.col-sm-6(for="board") Board:
 						input.col-sm-6(type="text" name="board")
 					div.row.spacing
-						label.col-sm-6(for="thread") Text:
-						textarea.col-sm-6(name="thread" placeholder="Thread text...")
+						label.col-sm-6(for="thread_text") Text:
+						textarea.col-sm-6(name="thread_text" placeholder="Thread text...")
 					div.row.spacing
-						label.col-sm-6(for="password") Pass:
-						input.col-sm-6(type="password" name="password" placeholder="Password to delete")
+						label.col-sm-6(for="delete_password") Pass:
+						input.col-sm-6(type="password" name="delete_password" placeholder="Password to delete")
 					div.row.spacing
 						input.col-sm-12(type="submit" value="Create thread")
 			form.thread.col-sm-12.col-lg-6(method="GET")
@@ -76,8 +76,8 @@ body
 						label.col-sm-6(for="board") Board:
 						input.col-sm-6(type="text" name="board")
 					div.row.spacing
-						label.col-sm-6(for="thread") Thread ID:
-						input.col-sm-6(type="text" name="thread")
+						label.col-sm-6(for="thread_id") Thread ID:
+						input.col-sm-6(type="text" name="thread_id")
 					div.row.spacing
 						input.col-sm-12(type="submit" value="Report thread")
 			form.thread.col-sm-12.col-lg-6(method="DELETE")
@@ -87,11 +87,11 @@ body
 						label.col-sm-6(for="board") Board:
 						input.col-sm-6(type="text" name="board")
 					div.row.spacing
-						label.col-sm-6(for="thread") Thread ID:
-						input.col-sm-6(type="text" name="thread")
+						label.col-sm-6(for="thread_id") Thread ID:
+						input.col-sm-6(type="text" name="thread_id")
 					div.row.spacing
-						label.col-sm-6(for="password") Pass:
-						input.col-sm-6(type="password" name="password" placeholder="Password to delete")
+						label.col-sm-6(for="delete_password") Pass:
+						input.col-sm-6(type="password" name="delete_password" placeholder="Password to delete")
 					div.row.spacing
 						input.col-sm-12(type="submit" value="Delete thread")
 		section.row.align-items-center
@@ -104,14 +104,14 @@ body
 						label.col-sm-6(for="board") Board:
 						input.col-sm-6(type="text" name="board")
 					div.row.spacing
-						label.col-sm-6(for="thread") Thread ID:
-						input.col-sm-6(type="text" name="thread")
+						label.col-sm-6(for="thread_id") Thread ID:
+						input.col-sm-6(type="text" name="thread_id")
 					div.row.spacing
-						label.col-sm-6(for="reply") Reply:
-						textarea.col-sm-6(name="reply" placeholder="Reply text...")
+						label.col-sm-6(for="reply_text") Reply:
+						textarea.col-sm-6(name="reply_text" placeholder="Reply text...")
 					div.row.spacing
-						label.col-sm-6(for="password") Pass:
-						input.col-sm-6(type="password" name="password" placeholder="Password to delete")
+						label.col-sm-6(for="delete_password") Pass:
+						input.col-sm-6(type="password" name="delete_password" placeholder="Password to delete")
 					div.row.spacing
 						input.col-sm-12(type="submit" value="Post reply")
 			form.reply.col-sm-12.col-lg-6(method="GET")
@@ -121,8 +121,8 @@ body
 						label.col-sm-6(for="board") Board:
 						input.col-sm-6(type="text" name="board")
 					div.row.spacing
-						label.col-sm-6(for="thread") Thread ID:
-						input.col-sm-6(type="text" name="thread")
+						label.col-sm-6(for="thread_id") Thread ID:
+						input.col-sm-6(type="text" name="thread_id")
 					div.row.spacing
 						input.col-sm-12(type="submit" value="Show replies")
 			form.reply.col-sm-12.col-lg-6(method="PUT")
@@ -132,11 +132,11 @@ body
 						label.col-sm-6(for="board") Board:
 						input.col-sm-6(type="text" name="board")
 					div.row.spacing
-						label.col-sm-6(for="thread") Thread ID:
-						input.col-sm-6(type="text" name="thread")
+						label.col-sm-6(for="thread_id") Thread ID:
+						input.col-sm-6(type="text" name="thread_id")
 					div.row.spacing
-						label.col-sm-6(for="reply") Reply ID:
-						input.col-sm-6(type="text" name="reply")
+						label.col-sm-6(for="reply_id") Reply ID:
+						input.col-sm-6(type="text" name="reply_id")
 					div.row.spacing
 						input.col-sm-12(type="submit" value="Report reply")
 			form.reply.col-sm-12.col-lg-6(method="DELETE")
@@ -146,14 +146,14 @@ body
 						label.col-sm-6(for="board") Board:
 						input.col-sm-6(type="text" name="board")
 					div.row.spacing
-						label.col-sm-6(for="thread") Thread ID:
-						input.col-sm-6(type="text" name="thread")
+						label.col-sm-6(for="thread_id") Thread ID:
+						input.col-sm-6(type="text" name="thread_id")
 					div.row.spacing
 						label.col-sm-6(for="reply") Reply ID:
-						input.col-sm-6(type="text" name="reply")
+						input.col-sm-6(type="text" name="reply_id")
 					div.row.spacing
-						label.col-sm-6(for="password") Pass:
-						input.col-sm-6(type="password" name="password" placeholder="Password to delete")
+						label.col-sm-6(for="delete_password") Pass:
+						input.col-sm-6(type="password" name="delete_password" placeholder="Password to delete")
 					div.row.spacing
 						input.col-sm-12(type="submit" value="Delete reply")
 	script(src="/js/action.js")

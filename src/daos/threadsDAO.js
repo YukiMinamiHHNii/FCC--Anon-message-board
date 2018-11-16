@@ -18,8 +18,8 @@ exports.createThread = (params, data, result) => {
 		} else {
 			new Thread({
 				board: params.board,
-				text: data.thread,
-				delete_password: data.password
+				text: data.thread_text,
+				delete_password: data.delete_password
 			}).save((error, savedThread) => {
 				if (error) {
 					return result({
@@ -57,6 +57,28 @@ exports.getThreads = (params, result) => {
 						return result(foundThread);
 					}
 				});
+		}
+	});
+};
+
+exports.reportThread = (params, data, result) => {
+	handleConnection((error, connected) => {
+		if (!connected) {
+			return result({ status: "Error while connecting to DB", error: error });
+		} else {
+			Thread.findOneAndUpdate(
+				{ board: params.board, _id: data.thread_id },
+				{ $set: { reported: true } },
+				{ new: true }
+			).exec((err, updatedThread) => {
+				if (err || !updatedThread) {
+					return result({
+						status: `Thread ${data.thread_id} not found in board ${params.board}`
+					});
+				} else {
+					return result({ status: "Success" });
+				}
+			});
 		}
 	});
 };

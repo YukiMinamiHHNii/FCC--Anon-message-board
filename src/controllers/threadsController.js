@@ -1,6 +1,7 @@
 const threadsDAO = require("../daos/threadsDAO");
 
 exports.createThread = (req, res) => {
+	console.log(req);
 	threadsDAO.createThread(req.params, req.body, result=>{
 		res.json(result);
 	});
@@ -13,7 +14,9 @@ exports.getThreads = (req, res) => {
 };
 
 exports.reportThread = (req, res) => {
-	res.json({ status: "on threads PUT" });
+	threadsDAO.reportThread(req.params, req.body, result=>{
+		res.json(result);
+	});
 };
 
 exports.deleteThread = (req, res) => {
