@@ -1,7 +1,6 @@
 const threadsDAO = require("../daos/threadsDAO");
 
 exports.createThread = (req, res) => {
-	console.log(req);
 	threadsDAO.createThread(req.params, req.body, result=>{
 		res.json(result);
 	});

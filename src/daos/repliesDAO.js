@@ -13,7 +13,6 @@ function handleConnection(connected) {
 }
 
 exports.createReply = (params, data, result) => {
-	console.log(data);
 	handleConnection((error, connected) => {
 		if (!connected) {
 			return result({ status: "Error while connecting to DB", error: error });
