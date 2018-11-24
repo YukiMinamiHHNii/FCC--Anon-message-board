@@ -1,7 +1,6 @@
 const mongoose = require("mongoose"),
 	Thread = require("../models/threadModel"),
-	Reply = require("../models/replyModel"),
-	dotenv = require("dotenv").load();
+	Reply = require("../models/replyModel")
 
 exports.createThread = (params, data) => {
 	return new Promise((resolve, reject) => {

@@ -13,7 +13,7 @@ exports.handleConnection = () => {
 
 	mongoose.connection.on("error", err => {
 		console.log(
-			`Error while connecting app to DB... aborting execution \nCaused by: ${err}`
+			`Error while connecting to DB... aborting application. \nCaused by: ${err}`
 		);
 		process.exit(1);
 	});
@@ -21,9 +21,5 @@ exports.handleConnection = () => {
 	mongoose.connection.on("disconnected", () => {
 		console.log("App has been disconnected from DB");
 		process.exit();
-	});
-
-	process.on("SIGINT", () => {
-		mongoose.connection.close("Connection to DB closed due to app termination");
 	});
 };

@@ -1,5 +1,4 @@
 const mongoose = require("mongoose"),
-	dotenv = require("dotenv").load(),
 	Reply = require("../models/replyModel"),
 	Thread = require("../models/threadModel");
 
