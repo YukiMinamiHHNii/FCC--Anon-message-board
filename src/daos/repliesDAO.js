@@ -3,142 +3,157 @@ const mongoose = require("mongoose"),
 	Reply = require("../models/replyModel"),
 	Thread = require("../models/threadModel");
 
-function handleConnection(connected) {
-	mongoose.connect(
-		process.env.MONGO_DB_CONNECTION,
-		err => {
-			return err ? connected(err, false) : connected(null, true);
-		}
-	);
-}
-
-exports.createReply = (params, data, result) => {
-	handleConnection((error, connected) => {
-		if (!connected) {
-			return result({ status: "Error while connecting to DB", error: error });
-		} else {
-			Thread.findOne({ board: params.board, _id: data.thread_id }).exec(
-				(error, foundThread) => {
-					if (error || !foundThread) {
-						return result({
-							status: "Requested thread not found",
-							error: error //Remove this later
-						});
-					} else {
-						Reply({
-							text: data.reply_text,
-							delete_password: data.delete_password,
-							created_on: new Date()
-						}).save((error, savedReply) => {
-							if (error) {
-								return result({
-									status: "Error while saving reply",
-									error: error
-								});
-							} else {
-								foundThread.replies.push(savedReply._id);
-								foundThread.bumped_on = new Date();
-								foundThread.save((error, updatedData) => {
-									if (error) {
-										return result({
-											status: "Error while updating thread",
-											error: error
-										});
-									} else {
-										return result(savedReply);
-									}
-								});
-							}
-						});
-					}
-				}
-			);
-		}
+exports.createReply = (params, data) => {
+	return new Promise((resolve, reject) => {
+		let thread, reply;
+		findSingleThreadData({ board: params.board, _id: data.thread_id })
+			.then(foundThread => {
+				thread = foundThread;
+				return saveReplyData({
+					text: data.reply_text,
+					delete_password: data.delete_password,
+					created_on: new Date()
+				});
+			})
+			.then(savedReply => {
+				reply = savedReply;
+				thread.replies.push(savedReply._id);
+				thread.bumped_on = new Date();
+				return updateThread(thread);
+			})
+			.then(updatedThread => {
+				resolve(reply);
+			})
+			.catch(err => {
+				reject(err);
+			});
 	});
 };
 
-exports.getReplies = (params, data, result) => {
-	handleConnection((error, connected) => {
-		if (!connected) {
-			return result({ status: "Error while connecting to DB", error: error });
-		} else {
-			Thread.find({ board: params.board, _id: data.thread_id })
-				.select({ __v: 0, delete_password: 0, reported: 0 })
-				.populate({
-					path: "replies",
-					select: { __v: 0, delete_password: 0, reported: 0 }
-				})
-				.exec((err, foundThread) => {
-					if (err || Object.keys(foundThread).length < 1) {
-						return result({ status: "Requested thread not found" });
-					} else {
-						return result(foundThread);
-					}
+function findSingleThreadData(threadData) {
+	return new Promise((resolve, reject) => {
+		Thread.findOne(threadData)
+			.select({ __v: 0, delete_password: 0, reported: 0 })
+			.populate({
+				path: "replies",
+				select: { __v: 0, delete_password: 0, reported: 0 }
+			})
+			.exec()
+			.then(foundThread => {
+				if (foundThread) {
+					resolve(foundThread);
+				} else {
+					reject({
+						status: "Requested thread data not found"
+					});
+				}
+			})
+			.catch(err => {
+				reject({
+					status: "Error while retrieving thread data",
+					error: err.message
 				});
-		}
+			});
+	});
+}
+
+function saveReplyData(replyData) {
+	return new Promise((resolve, reject) => {
+		Reply(replyData)
+			.save()
+			.then(savedReply => {
+				resolve(savedReply);
+			})
+			.catch(err => {
+				reject({
+					status: "Error while saving reply",
+					error: err.message
+				});
+			});
+	});
+}
+
+function updateThread(foundThread) {
+	return new Promise((resolve, reject) => {
+		foundThread
+			.save()
+			.then(updatedThread => {
+				resolve(updatedThread);
+			})
+			.catch(err => {
+				reject({
+					status: "Error while updating thread",
+					error: err.message
+				});
+			});
+	});
+}
+
+exports.getReplies = (params, data, result) => {
+	return new Promise((resolve, reject) => {
+		findSingleThreadData({ board: params.board, _id: data.thread_id })
+			.then(result => {
+				resolve(result);
+			})
+			.catch(err => {
+				reject(err);
+			});
 	});
 };
 
 exports.reportReply = (params, data, result) => {
-	handleConnection((error, connected) => {
-		if (!connected) {
-			return result({ status: "Error while connecting to DB", error: error });
-		} else {
-			Thread.findOne({
-				board: params.board,
-				_id: data.thread_id,
-				replies: data.reply_id
-			}).exec((err, foundThread) => {
-				if (error || !foundThread) {
-					return result({
-						status:
-							"Error while retrieving reply data... are your filters correct?"
-					});
-				} else {
-					Reply.findOneAndUpdate(
-						{ _id: data.reply_id },
-						{ $set: { reported: true } },
-						{ new: true }
-					).exec((err, updatedReply) => {
-						if (err || !updatedReply) {
-							return result({
-								status: `Error while reporting reply ${data.reply_id}`,
-								error: err
-							});
-						} else {
-							return result({ status: "Success" });
-						}
-					});
-				}
+	return new Promise((resolve, reject) => {
+		findSingleThreadData({
+			board: params.board,
+			_id: data.thread_id,
+			replies: data.reply_id
+		})
+			.then(foundThread => {
+				return updateReplyData({ _id: data.reply_id }, { reported: true });
+			})
+			.then(result => {
+				resolve(result);
+			})
+			.catch(err => {
+				reject(err);
 			});
-		}
 	});
 };
 
-exports.deleteReply = (params, data, result) => {
-	handleConnection((error, connected) => {
-		if (!connected) {
-			return result({ status: "Error while connecting to DB", error: error });
-		} else {
-			Thread.findOne({ board: params.board, _id: data.thread_id }).exec(
-				(err, foundThread) => {
-					if (err || !foundThread) {
-						return result({ status: "Requested thread not found", error: err });
-					} else {
-						Reply.findOneAndUpdate(
-							{ _id: data.reply_id, delete_password: data.delete_password },
-							{ $set: { text: "[deleted]" } },
-							{ new: true }
-						).exec((err, updatedReply) => {
-							if (err || !updatedReply) {
-								return result({ status: "Incorrect password or reply ID" });
-							} else {
-								return result({ status: "Success" });
-							}
-						});
-					}
+function updateReplyData(replyFilters, updateData) {
+	return new Promise((resolve, reject) => {
+		Reply.findOneAndUpdate(replyFilters, { $set: updateData }, { new: true })
+			.exec()
+			.then(updatedReply => {
+				if (updatedReply) {
+					resolve({ status: "Success" });
+				} else {
+					reject({ status: "Reply data not found" });
 				}
-			);
-		}
+			})
+			.catch(err => {
+				reject({
+					status: "Error while updating reply",
+					error: err.message
+				});
+			});
+	});
+}
+
+exports.deleteReply = (params, data) => {
+	return new Promise((resolve, reject) => {
+		findSingleThreadData({ board: params.board, _id: data.thread_id })
+			.then(foundThread => {
+				return updateReplyData(
+					{ _id: data.reply_id, delete_password: data.delete_password },
+					{ text: "[deleted]" }
+				);
+			})
+			.then(result => {
+				resolve(result);
+			})
+			.catch(err => {
+				reject(err);
+			});
 	});
 };

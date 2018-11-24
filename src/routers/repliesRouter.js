@@ -12,4 +12,11 @@ router.put("/replies/:board", upload.none(), repliesController.reportReply);
 
 router.delete("/replies/:board", upload.none(), repliesController.deleteReply);
 
+router.use((req, res) => {
+	res
+		.status(404)
+		.type("json")
+		.send({ status: "Not found" });
+});
+
 module.exports = router;

@@ -1,6 +1,6 @@
 const mongoose = require("mongoose"),
-			Schema = mongoose.Schema,
-			Reply = require("./replyModel");
+	Schema = mongoose.Schema,
+	Reply = require("./replyModel");
 
 const threadSchema = new Schema({
 	board: { type: String, required: true },

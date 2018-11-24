@@ -38,9 +38,7 @@ function ajaxRequest(data, result) {
 
 	req.addEventListener("readystatechange", e => {
 		if (req.readyState === 4) {
-			if (req.status >= 200 && req.status < 400) {
-				return result(JSON.parse(req.response));
-			}
+			return result(JSON.parse(req.response));
 		}
 	});
 

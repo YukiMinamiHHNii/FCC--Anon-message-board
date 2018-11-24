@@ -1,5 +1,5 @@
 const mongoose = require("mongoose"),
-			Schema = mongoose.Schema;
+	Schema = mongoose.Schema;
 
 const replySchema = new Schema({
 	text: { type: String, required: true },

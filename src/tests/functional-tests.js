@@ -118,7 +118,7 @@ suite("Functional Tests", () => {
 					.query({ thread_id: threadID })
 					.end((err, res) => {
 						assert.equal(res.status, 200);
-						assert.isArray(res.body, "Response is an array of replies");
+						assert.isArray(res.body.replies, "Response is an array of replies");
 						assert.isNotEmpty(
 							res.body,
 							"Should have at least reply created on previous test"

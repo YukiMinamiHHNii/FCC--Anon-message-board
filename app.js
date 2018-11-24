@@ -3,10 +3,13 @@ const express = require("express"),
 	bodyParser = require("body-parser"),
 	methodOver = require("method-override"),
 	helmet = require("helmet"),
+	connection = require("./src/utils/connection"),
 	threadsRouter = require("./src/routers/threadsRouter"),
 	repliesRouter = require("./src/routers/repliesRouter");
 
 const app = express();
+
+connection.handleConnection();
 
 app.set("view engine", "pug");
 
